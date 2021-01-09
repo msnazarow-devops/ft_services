@@ -1,6 +1,18 @@
-siteurl="localhost"
-wptitle="sgertrud ft_server"
-wpemail="mishangel@mail.ru"
-wpuser="admin"
-wppass="admin"
-curl -d "weblog_title=$wptitle&user_name=$wpuser&admin_password=$wppass&admin_password2=$wppass&admin_email=$wpemail" -k https://$siteurl/wp-admin/install.php?step=2
+WP="wp --allow-root"
+WP_ROOT=/var/www/wordpress
+cd $WP_ROOT
+
+while [[ -n $($WP core is-installed 2>&1 | grep Error) ]]
+do
+    echo "Waiting for mysql database to start up..."
+    sleep 15s
+done
+
+if ! $($WP core is-installed);
+then
+    $WP core install --url=wordpress/ --path=$WP_ROOT --title="SGERTRUD FT_SERVICES" --admin_user="admin" --admin_password="admin" --admin_email=msnazarow@gmail.com --skip-email
+	$WP option update site blog description "The best project ever"
+    $WP user create misha misha@mail.ru --user_pass=misha
+    $WP user create sasha sasha@mail.ru --user_pass=sasha
+    $WP user create masha sasha@mail.ru --user_pass=masha
+fi

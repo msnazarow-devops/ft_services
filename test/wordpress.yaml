@@ -1,18 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+        metallb.universe.tf/allow-shared-ip: sharing key
   name: wordpress
   labels:
     app: wordpress
 spec:
   ports:
     - port: 5050
-      targetPort: wordpress
+      targetPort: 443
   selector:
     app: wordpress
     tier: frontend
   type: LoadBalancer
-  loadBalancerIP: 192.168.49.2
+  loadBalancerIP: 192.168.49.3
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -47,16 +49,16 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: onlywordpress:latest
+      - image: mywordpress
         imagePullPolicy: Never
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-mysql
         - name: WORDPRESS_DB_PASSWORD
-          value: root
+          value: admin
         - name: WORDPRESS_DB_USER
-          value: root
+          value: admin
         - name: WORDPRESS_DB_NAME
           value: wp_database
         - name: server_port
