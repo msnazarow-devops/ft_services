@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - image: mynginx
+        imagePullPolicy: Never
+        name: nginx
+        env:
+        - name: server_port
+          value: "443"
+        resources:
+          limits:
+            memory: "1000Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 443
+          name: https
+        - containerPort: 80
+          name: http
+        - containerPort: 22
+          name: ssh
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  annotations:
+        metallb.universe.tf/allow-shared-ip: sharing key
+spec:
+  selector:
+    app: nginx
+  ports:
+  - port: 80
+    targetPort: http
+    name: nginx-http
+  - port: 443
+    targetPort: https
+    name: nginx-https
+  - port: 22
+    targetPort: ssh
+    name: nginx-ssh
+  type: LoadBalancer
+  loadBalancerIP: 192.168.99.105

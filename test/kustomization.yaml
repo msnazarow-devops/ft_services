@@ -1,9 +1,0 @@
-secretGenerator:
-- name: mysql-pass
-  literals:
-  - password=root
-resources:
-  - mysql.yaml
-  - wordpress.yaml
-  - nginx.yaml
-  - phpmyadmin.yaml

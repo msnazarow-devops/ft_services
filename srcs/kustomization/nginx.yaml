@@ -50,4 +50,4 @@ spec:
     targetPort: ssh
     name: nginx-ssh
   type: LoadBalancer
-  loadBalancerIP: 192.168.49.3
+  loadBalancerIP: $IP
