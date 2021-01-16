@@ -15,7 +15,7 @@ spec:
     app: phpmyadmin
     tier: frontend
   type: LoadBalancer
-  loadBalancerIP: 192.168.99.105
+  loadBalancerIP: 192.168.49.3
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
@@ -37,7 +37,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: myphpmyadmin
+      - image: phpmyadmin
         imagePullPolicy: Never
         name: phpmyadmin
         env:

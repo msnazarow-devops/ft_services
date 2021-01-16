@@ -1,9 +1,10 @@
-#!bin/bash
-mysql_install_db --user=mysql --datadir=/var/lib/mysql
-service mysql start
-mysql -e "CREATE DATABASE $MYSQL_DATABASE"
-mysql -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
+#!bin/sh
+openrc default
+service mariadb setup
+service mariadb start
+mysql -e "CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE"
+mysql -e "CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
 mysql -e "GRANT ALL ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD' WITH GRANT OPTION;"
 mysql -e "FLUSH PRIVILEGES"
-service mysql stop
-mysqld
+service mariadb stop
+mysqld_safe

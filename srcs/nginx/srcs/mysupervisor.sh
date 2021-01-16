@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Start the first process
-php-fpm7
+/usr/sbin/sshd
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start php: $status"
@@ -22,9 +22,8 @@ fi
 # if it detects that either of the processes has exited.
 # Otherwise it loops forever, waking up every 60 seconds
 
-
 while sleep 60; do
-  ps aux |grep php |grep -q -v grep
+  ps aux |grep sshd |grep -q -v grep
   PROCESS_1_STATUS=$?
   ps aux |grep nginx |grep -q -v grep
   PROCESS_2_STATUS=$?

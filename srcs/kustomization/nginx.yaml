@@ -12,12 +12,16 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: mynginx
+      - image: nginx
         imagePullPolicy: Never
         name: nginx
         env:
         - name: server_port
           value: "443"
+        - name: PMAPORT
+          value: "$PMAPORT"
+        - name: WPPORT
+          value: "$WPPORT"
         resources:
           limits:
             memory: "1000Mi"

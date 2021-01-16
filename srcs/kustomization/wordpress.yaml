@@ -8,7 +8,7 @@ metadata:
     app: wordpress
 spec:
   ports:
-    - port: 5050
+    - port: $WPPORT
       targetPort: 443
   selector:
     app: wordpress
@@ -49,12 +49,14 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: mywordpress
+      - image: wordpress
         imagePullPolicy: Never
         name: wordpress
         env:
         - name: WORDPRESS_DB_HOST
           value: wordpress-mysql
+        - name: WORDPRESS_DB_PORT
+          value: "3306"
         - name: WORDPRESS_DB_PASSWORD
           valueFrom:
            secretKeyRef:
@@ -65,13 +67,13 @@ spec:
         - name: WORDPRESS_DB_NAME
           value: wp_database
         - name: server_port
-          value: "5050"
+          value: "$WPPORT"
         ports:
         - containerPort: 443
           name: wordpress
         volumeMounts:
         - name: wordpress-persistent-storage
-          mountPath: /var/www/wordpress
+          mountPath: /etc/setup/wordpress
       volumes:
       - name: wordpress-persistent-storage
         persistentVolumeClaim:

@@ -8,7 +8,7 @@ metadata:
     app: phpmyadmin
 spec:
   ports:
-    - port: 5000
+    - port: $PMAPORT
       targetPort: 443
       name: phpmyadmin
   selector:
@@ -37,12 +37,12 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: myphpmyadmin
+      - image: phpmyadmin
         imagePullPolicy: Never
         name: phpmyadmin
         env:
         - name: "server_port"
-          value: "5000"
+          value: "$PMAPORT"
         - name: PMA_HOST
           value: wordpress-mysql
         ports:

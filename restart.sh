@@ -1,8 +1,5 @@
 #!/usr/bin/zsh
-minikube start --driver=docker
-minikube addons enable dashboard
-minikube addons enable metrics-server
-minikube addons enable metallb
+kubectl delete -k srcs/kustomization
 export IP=$(minikube ip)
 cub=$(echo $IP | grep -Eo "[0-9]+$")
 IP=$(echo $IP | sed -e "s/\.[0-9]\+$//")
@@ -40,10 +37,3 @@ envsubst '{$IP},{$WPPORT},{$PMAPORT}' < nginx.yaml > .nginx.yaml
 envsubst '{$IP},{$PMAPORT}' < phpmyadmin.yaml > .phpmyadmin.yaml
 envsubst '{$IP},{$FTPPORT}' < ftps.yaml > .ftps.yaml
 kubectl apply -k .
-echo "Use $IP to manage services"
-cd ../..
-echo "#!/usr/bin/zsh" > restart.sh
-echo "kubectl delete -k srcs/kustomization" >> restart.sh
-awk '(NR>5 && NR<43)' setup.sh >> restart.sh
-chmod +x restart.sh
-chmod -x setup.sh

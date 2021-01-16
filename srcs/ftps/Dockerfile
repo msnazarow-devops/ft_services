@@ -6,19 +6,17 @@
 #    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/24 03:36:49 by sgertrud          #+#    #+#              #
-#    Updated: 2021/01/14 04:06:36 by sgertrud         ###   ########.fr        #
+#    Updated: 2021/01/16 10:25:56 by sgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM alpine
-EXPOSE 80 443
-ARG nginx_location="/etc/nginx/conf.d/default.conf"
-ENV nginx_location="${nginx_location}"
+EXPOSE 20 21 
+ARG IP="192.168.49.3"
+ENV IP="${IP}"
 RUN apk update && apk  upgrade
-RUN apk add -q --no-cache nginx wget openssl openssh
-RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=School 21/CN=sgertrud"
+RUN apk add --no-cache vsftpd openssl
+RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/selfsigned.key -out /etc/ssl/certs/selfsigned.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=School 21/CN=sgertrud"
 COPY srcs/ .
-RUN mv localhost.conf "${nginx_location}"
-RUN mkdir /run/nginx/
-RUN echo -e "admin\nadmin" | adduser msnazarow && ssh-keygen -A
+RUN echo -e "admin\nadmin" | adduser msnazarow
 CMD ["sh", "run.sh"]

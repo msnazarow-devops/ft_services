@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # Start the first process
-php-fpm7.3
+php-fpm7
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start php: $status"

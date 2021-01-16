@@ -7,6 +7,7 @@ metadata:
 spec:
   ports:
     - port: 3306
+      name: mysql
   selector:
     app: wordpress
     tier: mysql
@@ -45,7 +46,7 @@ spec:
         tier: mysql
     spec:
       containers:
-      - image: mymysql
+      - image: mysql
         imagePullPolicy: Never
         name: mysql
         env:
@@ -69,7 +70,25 @@ spec:
         volumeMounts:
         - name: mysql-persistent-storage
           mountPath: /var/lib/mysql
+        - name: cgroup
+          mountPath: /sys/fs/cgroup
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: mysql-pv-claim
+      - name: cgroup
+        persistentVolumeClaim:
+          claimName: cgroup-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cgroup-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

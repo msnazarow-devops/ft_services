@@ -10,6 +10,7 @@ secretGenerator:
     - password=admin
 resources:
   - mysql.yaml
+  - .ftps.yaml
   - .wordpress.yaml
   - .nginx.yaml
   - .phpmyadmin.yaml
