@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    kustomization.yaml                                 :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/18 15:23:50 by sgertrud          #+#    #+#              #
+#    Updated: 2021/01/18 15:23:51 by sgertrud         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 secretGenerator:
 - name: mysql-pass
   literals:
@@ -15,3 +27,5 @@ resources:
   - .nginx.yaml
   - .phpmyadmin.yaml
   - metallb.yaml
+  - .grafana.yaml
+  - .influxdb.yaml

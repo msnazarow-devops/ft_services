@@ -1,5 +1,5 @@
 #!/bin/sh
-
+sed -i -e "s/\$server_port/$server_port/" "${nginx_location}"
 # Start the first process
 php-fpm7
 status=$?

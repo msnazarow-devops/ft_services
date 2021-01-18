@@ -5,20 +5,23 @@
 #                                                     +:+ +:+         +:+      #
 #    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2020/06/24 03:36:49 by sgertrud          #+#    #+#              #
-#    Updated: 2021/01/18 09:00:23 by sgertrud         ###   ########.fr        #
+#    Created: 2021/01/17 13:06:53 by sgertrud          #+#    #+#              #
+#    Updated: 2021/01/18 18:41:40 by sgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FROM alpine:3.12
-EXPOSE 80 443
-ARG nginx_location="/etc/nginx/conf.d/default.conf"
-ENV nginx_location="${nginx_location}"
-RUN apk update && apk  upgrade
-RUN apk add -q --no-cache nginx wget openssl openssh
-RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=School 21/CN=sgertrud"
-COPY srcs/ .
-RUN mv localhost.conf "${nginx_location}"
-RUN mkdir /run/nginx/
-RUN echo -e "admin\nadmin" | adduser msnazarow && ssh-keygen -A
-CMD ["sh", "mysupervisor.sh"]
+
+WORKDIR /usr/share/grafana
+
+RUN apk update
+RUN apk add grafana --repository http://nl.alpinelinux.org/alpine/edge/community/
+
+#COPY dashboards/ /usr/share/grafana/public/dashboards/
+
+EXPOSE 3000
+COPY srcs/dashboards.yml /usr/share/grafana/conf/provisioning/dashboards/
+COPY srcs/datasources.yml /usr/share/grafana/conf/provisioning/datasources/
+COPY srcs/custom.ini /usr/share/grafana/conf
+COPY srcs/dashboards /usr/share/grafana/public/dashboards/
+CMD ["grafana-server", "web"]

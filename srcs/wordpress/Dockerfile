@@ -6,11 +6,11 @@
 #    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/24 03:36:49 by sgertrud          #+#    #+#              #
-#    Updated: 2021/01/14 04:06:44 by sgertrud         ###   ########.fr        #
+#    Updated: 2021/01/17 09:33:14 by sgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM alpine
+FROM alpine:3.12
 EXPOSE 22 80 443
 ARG nginx_location="/etc/nginx/conf.d/default.conf"
 ENV nginx_location="${nginx_location}"

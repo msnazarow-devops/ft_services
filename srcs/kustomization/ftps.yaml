@@ -1,8 +1,20 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    ftps.yaml                                          :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/18 15:24:22 by sgertrud          #+#    #+#              #
+#    Updated: 2021/01/18 15:24:37 by sgertrud         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
-        metallb.universe.tf/allow-shared-ip: sharing key
+        metallb.universe.tf/allow-shared-ip: sgertrud
   name: ftps
 spec:
   selector:
@@ -17,19 +29,6 @@ spec:
   type: LoadBalancer
   loadBalancerIP: $IP
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: ftps-claim
-  labels:
-    app: ftps
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -40,6 +39,8 @@ spec:
   selector:
     matchLabels:
       app: ftps
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
@@ -65,3 +66,16 @@ spec:
       - name: ftps
         persistentVolumeClaim:
           claimName: ftps-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ftps-claim
+  labels:
+    app: ftps
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi

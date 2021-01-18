@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    mysql.yaml                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/01/18 14:59:00 by sgertrud          #+#    #+#              #
+#    Updated: 2021/01/18 14:59:01 by sgertrud         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,19 +24,6 @@ spec:
     app: wordpress
     tier: mysql
   type: ClusterIP
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: mysql-pv-claim
-  labels:
-    app: wordpress
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
@@ -79,6 +78,19 @@ spec:
       - name: cgroup
         persistentVolumeClaim:
           claimName: cgroup-claim
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: wordpress
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

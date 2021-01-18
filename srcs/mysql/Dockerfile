@@ -6,13 +6,13 @@
 #    By: sgertrud <msnazarow@gmail.com>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/06/24 03:36:49 by sgertrud          #+#    #+#              #
-#    Updated: 2021/01/14 04:06:39 by sgertrud         ###   ########.fr        #
+#    Updated: 2021/01/17 09:33:14 by sgertrud         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FROM alpine
+FROM alpine:3.12
 EXPOSE 3606
-RUN apk update && apk  upgrade
+RUN apk update && apk upgrade
 RUN apk add -q --no-cache wget mysql mysql-client procps openrc
 COPY srcs/ .
 RUN chmod +x *.sh
